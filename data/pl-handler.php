@@ -1,7 +1,11 @@
 <?php
     require_once('handler.php');
 
-    if(isset($_POST['title'])){
+    if(isset($_POST['del'])){
+        $sql = $handler->prepare('UPDATE newprivatelesson_2017 SET student_id=101 WHERE id=?');
+        $sql->execute(array($_POST['del']));
+        echo 1;
+    }else if(isset($_POST['title'])){
         $sql = $handler->prepare("INSERT INTO newprivatelesson_2017(
             `school_id`,
             `privatelessonday`,

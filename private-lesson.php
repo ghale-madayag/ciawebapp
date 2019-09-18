@@ -115,9 +115,31 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <?php include_once('inc/script.php'); ?>
+<script src="dist/js/jquery-toast-plugin-master/dist/jquery.toast.min.js"></script>
+<script src="dist/js/toast.js"></script>
 <script src="dist/js/pl.js"></script>
 <script>
     getAllPL();
+    $(function () {
+    //Enable iCheck plugin for checkboxes
+    //iCheck for checkbox and radio inputs
+   
+    //Enable check and uncheck all functionality
+    $(".checkbox-toggle").click(function () {
+      var clicks = $(this).data('clicks');
+      if (clicks) {
+        //Uncheck all checkboxes
+        $(".pl-all input[type='checkbox']").iCheck("uncheck");
+        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+      } else {
+        //Check all checkboxes
+        $(".pl-all input[type='checkbox']").iCheck("check");
+        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+      }
+      $(this).data("clicks", !clicks);
+    });
+
+  });
 </script>
 </body>
 </html>

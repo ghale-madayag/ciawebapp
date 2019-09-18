@@ -21,6 +21,32 @@ $(document).ready(function(){
         })
         e.preventDefault();
     })
+
+    $("#del").on('click', function(){
+        var len = $("input[name='selectVal']:checked").length;
+
+        if(len==0){
+            alert('Please select data');
+        }else{
+           var del = confirm("Are you sure you want to delete the data?");
+
+           if(del==true){
+                $.each($("input[name='selectVal']:checked"), function(){
+                    var formData = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "data/pl-handler.php",
+                        data: "del="+formData,
+                        cache: false,
+                        success: function(data){
+                            toastSuccess("Successfully Deleted", "The data has been deleted");
+                            refresh("pl-all");
+                        }
+                    })
+                });
+           }
+        }
+    })
 })
 
 function getAllPL() {
@@ -63,7 +89,7 @@ function getAllPL() {
          'orderable':false,
          'className': 'dt-body-center',
          'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="selectCli" id="selectCli" value="'+data+'" data-rec="'+full.id+'">';
+             return '<input type="checkbox" name="selectVal" id="selectVal" value="'+data+'" data-rec="'+full.id+'">';
         }
         }],
         'order': [1, 'asc']
@@ -76,7 +102,7 @@ function getAllPL() {
 
     /*------------- custom toolbar ------------*/
      $("div.toolbar").html('<div class="mailbox-controls">'+
-         '<button type="button" class="btn btn-default btn-sm checkbox-toggle" title="Select All"><i class="fa fa-square"></i> Select All</button> '+
+         '<button type="button" class="btn btn-default btn-sm checkbox-toggle" title="Select All"><i class="fa fa-square-o"></i> Select All</button> '+
          '<div class="btn-group">'+
             '<button type="button" class="btn btn-default btn-sm" id="del" title="Delete"><i class="fa fa-trash"></i> Delete</button>'+
             '<button type="button" class="btn btn-default btn-sm" id="edit" title="Edit"><i class="fa fa-edit"></i> Edit</button>'+
