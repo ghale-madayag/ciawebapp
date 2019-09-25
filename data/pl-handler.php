@@ -5,6 +5,32 @@
         $sql = $handler->prepare('UPDATE newprivatelesson_2017 SET student_id=101 WHERE id=?');
         $sql->execute(array($_POST['del']));
         echo 1;
+    }else if(isset($_POST['plid'])){
+        $sql = $handler->prepare("UPDATE newprivatelesson_2017 SET 
+                school_id=?,
+                privatelessonday=?,
+                privatelessontime=?,
+                orderlist=?
+                WHERE id=?
+        ");
+
+        $sql->execute(array($_POST['schoolEdit'],$_POST['titleEdit'],$_POST['timeEdit'],$_POST['listEdit'],$_POST['plid']));
+
+        echo 1;
+    }else if(isset($_POST['get_pl'])){
+        $sql = $handler->prepare('SELECT * FROM newprivatelesson_2017 WHERE id=?');
+        $sql->execute(array($_POST['get_pl']));
+
+        while ($row = $sql->fetch(PDO::FETCH_OBJ)) {
+            $result[] = array(
+                'school_id' => $row->school_id,
+                'title' => $row->privatelessonday,
+                'time' => $row->privatelessontime,
+                'orderlist' => $row->orderlist 
+            );
+        }
+
+        echo json_encode($result);
     }else if(isset($_POST['title'])){
         $sql = $handler->prepare("INSERT INTO newprivatelesson_2017(
             `school_id`,
@@ -42,7 +68,7 @@
 	        $date = date_format($dateCre, 'm/d/Y');
             $result[] = array(
                 'id' => $row->id,
-                'school_id' => $row->school_id,
+                'school_id' => schoolname($row->school_id), 
                 'privatelessonday' => $row->privatelessonday,
                 'privatelessontime' => $row->privatelessontime,
                 'price' => $row->price,
@@ -52,5 +78,25 @@
         }
         echo json_encode($result);
     }
+
+    function schoolname($name){ 
+        switch ($name) { 
+            case 1: 
+                return '4 Beeston St'; 
+                break; 
+            case 2: 
+                return 'Brisbane Grammar'; 
+                break; 
+            case 3: 
+                return 'Clayfield College'; 
+                break; 
+            case 4: 
+                return 'St Aidan’s'; 
+                break; 
+            default: 
+                return 'Brisbane Powerhouse'; 
+                break; 
+        } 
+    } 
 
 ?>

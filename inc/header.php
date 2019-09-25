@@ -15,3 +15,4 @@
 <!-- Google Font -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+<link rel="stylesheet" href="dist/js/jquery-toast-plugin-master/dist/jquery.toast.min.css">

@@ -10,17 +10,68 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(data){
-                console.log(data)
-                // if (data==1) {
-                //     $("input[type=text],input[type=number]").val("");
-                //     $("#patname").val('').change();
-                //     recentEsr();
-                //     toastSuccess("Successfully Registered", "You added new data <a href='all-esr.php'> View All</a>");
-                // }
+                if (data==1) {
+                    refresh('pl-all');
+                    $("input[type=text],input[type=number]").val("");
+                    toastSuccess("Successfully Registered", "You added new data");
+                    $("#addEvent").modal('hide');
+                }
             }
         })
         e.preventDefault();
     })
+
+    $("form#form-pl-edit").on('submit', function(e){
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            type: "POST",
+            url: "data/pl-handler.php",
+            data: formData,
+            cache: false,
+            async: false,
+            processData: false,
+            contentType: false,
+            success: function(data){
+                if (data==1) {
+                    refresh('pl-all');
+                    toastSuccess("Successfully Updated", "You update the data");
+                    $("#editEvent").modal('hide');
+                }
+            }
+        })
+        e.preventDefault();
+    })
+
+    $("#edit").on('click', function(){
+        var len = $("input[name='selectVal']:checked").length;
+
+        if(len==0){
+            alert('Please select data');
+        }else if(len>1){
+            alert('Please select only one data');
+        }else{
+            $.each($("input[name='selectVal']:checked"), function(){ 
+                var formData = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url:"data/pl-handler.php",
+                    data: "get_pl="+formData,
+                    cache:false,
+                    success: function(data){
+                        var json = $.parseJSON(data);
+                        $(json).each(function(i,val){
+                            $("#plid").val(formData);
+                            $("#titleEdit").val(val.title);
+                            $("#timeEdit").val(val.time);
+                            $("#schoolEdit").val(val.school_id).change();
+                            $("#listEdit").val(val.orderlist);
+                        });
+                    }
+                }) 
+                $("#editEvent").modal('show');
+            });
+        }
+    });
 
     $("#del").on('click', function(){
         var len = $("input[name='selectVal']:checked").length;
